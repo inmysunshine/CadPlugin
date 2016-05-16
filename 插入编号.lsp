@@ -1,0 +1,20 @@
+;;插入编号，如QL1,QL2...可以根据两点调整文字方向
+(defun C:s_add_index()
+    (print "by Sun Kaidong")
+    (setq TextHeight (getreal"\n文字高度："))
+    (setq StartPage (getint"开始号码："))
+    (setq TotalPage (getint"总号码数："))
+    (while (< StartPage TotalPage)
+        (setq pt1 (getpoint "插入点：\n"))
+        ;;调整文字方向
+        (setq pt2 (getpoint "选定方向：\n"))
+        (setq x1 (car pt1))
+        (setq y1 (nth 1 pt1))
+        (setq x2 (car pt2))
+        (setq y2 (nth 1 pt2))
+        (setq ang (/ (atan (/ (- y2 y1) (- x2 x1))) 3.14))   
+        (setq pt (mapcar '+ pt1 (list 0 0 0)))  ;;该处可以调整文字与选定点的相对位置关系
+        (COMMAND "TEXT" pt TextHeight (* ang 180) (strcat "HYZ" (itoa StartPage)))
+        (setq StartPage(+ 1 StartPage))
+    )
+)
